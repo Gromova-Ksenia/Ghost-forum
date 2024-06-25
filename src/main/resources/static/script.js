@@ -27,7 +27,7 @@ async function getPostsByUser(){
     }
 }
 
-//Окно едактирования поста
+//Окно редактирования поста
 function showEditPostModal(post){
     const modalBody = document.querySelector('#editPostModal .modal');
     const form = document.createElement('form');
