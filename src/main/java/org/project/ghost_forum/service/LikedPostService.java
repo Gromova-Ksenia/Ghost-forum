@@ -9,6 +9,7 @@ import org.project.ghost_forum.entity.Post;
 import org.project.ghost_forum.entity.User;
 import org.project.ghost_forum.mapper.LikedPostMapper;
 import org.project.ghost_forum.mapper.PostMapper;
+import org.project.ghost_forum.mapper.UserMapper;
 import org.project.ghost_forum.repository.LikedPostRepository;
 import org.project.ghost_forum.repository.PostRepository;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class LikedPostService {
     private final PostService postService;
     private final PostRepository postRepository;
     private final PostMapper postMapper;
+    private final UserMapper userMapper;
 
     public char getPostRateForCurrentUser(UUID postId){
         UserDto user = userService.getCurrent();
@@ -38,16 +40,17 @@ public class LikedPostService {
     //Едрён батон...
     @Transactional
     public LikedPostDto newRate(LikedPostDto likedPostDto){
-        UUID userId = likedPostDto.getUserId();
+        //Получаем пользователя, от которого запрос
+        User user = userMapper.toEntity(userService.getCurrent());
         UUID postId = likedPostDto.getPostId();
 
         //Если раньше оценки не было
-        if (repository.findByUserIdAndPostId(userId,postId).isEmpty()){
-            //Получаем пост и юзера
+        if (repository.findByUserIdAndPostId(user.getId(), postId).isEmpty()){
+            //Получаем пост
             Post post = postService.getPostById(postId);
-            User user = userService.getUserById(userId);
 
             //Говорим что теперь оценка есть
+            likedPostDto.setUserId(user.getId());
             LikedPost thisPost = mapper.toEntity(likedPostDto);
             LikedPost savedLikedPost = repository.save(thisPost);
             return mapper.toDto(savedLikedPost);
@@ -56,7 +59,7 @@ public class LikedPostService {
             Post post = postService.getPostById(postId);
             PostDto postDto = postMapper.toDto(post);
 
-            return repository.findByUserIdAndPostId(userId, postId).map(likedPost -> {
+            return repository.findByUserIdAndPostId(user.getId(), postId).map(likedPost -> {
                 //Обнуляем старую оценку
                 if(likedPost.getRate()=='+')
                 postDto.decreaseRating();

@@ -18,7 +18,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,7 +31,6 @@ public class UserService {
     private final UserMapper mapper;
     private final UserRepository repository;
     private final RoleService roleService;
-    private final CommentService commentService;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -54,6 +55,24 @@ public class UserService {
                 .collect(Collectors.toSet()));
 
         return dto;
+    }
+
+    @Transactional
+    @Encrypt
+    public UserDto userRegistration(UserDto userDto){
+
+        Role userRole = roleService.findRoleByName("ROLE_USER");
+
+        User newUser = User.builder()
+                .username(userDto.getUsername())
+                .password(userDto.getPassword())
+                .email(userDto.getEmail())
+                .registrationDate(LocalDate.now())
+                .roles(Set.of(userRole)).build();
+
+        User savedUser = repository.save(newUser);
+
+        return mapper.toDto(savedUser);
     }
 
     //Я ничё не понял
@@ -98,5 +117,15 @@ public class UserService {
 
     public User getUserById(UUID id){
         return repository.findById(id).orElseThrow();
+    }
+
+    //Ием по юзернейму без ошпинала
+    public User getUserByUsername(String username){
+        return repository.findByUsername(username).orElseThrow();
+    }
+
+    //Разницы, кроме опшинала нет, но в одном месте мне нужен ошинал
+    public Optional<User> findByUsername(String username){
+        return repository.findByUsername(username);
     }
 }

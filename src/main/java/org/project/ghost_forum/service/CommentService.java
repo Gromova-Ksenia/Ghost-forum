@@ -6,11 +6,13 @@ import org.project.ghost_forum.entity.Comment;
 import org.project.ghost_forum.entity.Post;
 import org.project.ghost_forum.entity.User;
 import org.project.ghost_forum.mapper.CommentMapper;
+import org.project.ghost_forum.mapper.UserMapper;
 import org.project.ghost_forum.repository.CommentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -21,10 +23,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CommentService {
-    CommentRepository repository;
-    CommentMapper mapper;
-    UserService userService;
-    PostService postService;
+    private final CommentRepository repository;
+    private final CommentMapper mapper;
+    private final UserService userService;
+    private PostService postService;
+    private final UserMapper userMapper;
 
     public Set<Comment> getComments(List<UUID> commentIds){
         return commentIds.stream()
@@ -35,7 +38,7 @@ public class CommentService {
 
     @Transactional
     public CommentDto newComment(CommentDto commentDto){
-        User user = userService.getUserById(commentDto.getUserId());
+        User user = userMapper.toEntity(userService.getCurrent());
         Post post = postService.getPostById(commentDto.getPostId());
 
         Comment comment = mapper.toEntity(commentDto).builder()
@@ -47,6 +50,19 @@ public class CommentService {
 
         Comment savedComment = repository.save(comment);
         return mapper.toDto(savedComment);
+    }
+
+    @Transactional
+    public CommentDto editComment(CommentDto commentDto){
+        Comment comment = repository.findById(commentDto.getId()).orElseThrow();
+
+        Comment savedComment = repository.save(mapper.merge(commentDto, comment));
+
+        return mapper.toDto(savedComment);
+    }
+
+    public Comment getCommentById(UUID id){
+        return repository.findById(id).orElseThrow();
     }
 
     @Transactional
@@ -70,5 +86,10 @@ public class CommentService {
     public List<CommentDto> getCommentsToPost(UUID postId){
         return repository.findAllByPost(postId).stream()
                 .map(this::transformToDto).toList();
+    }
+
+    @Autowired
+    public void setPostService(PostService postService){
+        this.postService = postService;
     }
 }

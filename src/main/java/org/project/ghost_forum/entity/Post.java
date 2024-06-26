@@ -1,10 +1,10 @@
 package org.project.ghost_forum.entity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -43,7 +43,7 @@ public class Post {
     @Builder.Default
     private int rating = 0;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
     private Set<Comment> comments;
 
     @JoinTable(name = "post_tags",

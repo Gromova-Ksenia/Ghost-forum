@@ -1,7 +1,6 @@
 package org.project.ghost_forum.entity;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.project.ghost_forum.entity.primary_keys.LikedPostsPK;
-//import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

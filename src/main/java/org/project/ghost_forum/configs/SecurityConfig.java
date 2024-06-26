@@ -46,7 +46,7 @@ public class SecurityConfig {
     @Bean //Отклоняемый запрос
     public AccessDeniedHandler deniedHandler() {
         return (request, response, accessDeniedException) -> {
-            response.sendRedirect("/home");
+            response.sendRedirect("/access-denied");
         };
     }
 
@@ -72,6 +72,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/home").permitAll()
                         .requestMatchers("/new_post").hasRole("USER")
                         .requestMatchers("/admin", "/api/admin**").hasRole("ADMIN")
+                        .requestMatchers("/static/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin

@@ -41,41 +41,51 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args){
-        tagRepository.save(new Tag(UUID.randomUUID(), TagName.АРТ));
-        tagRepository.save(new Tag(UUID.randomUUID(), TagName.ХЕДКАНОН));
-        tagRepository.save(new Tag(UUID.randomUUID(), TagName.КОСПЛЕЙ));
-        tagRepository.save(new Tag(UUID.randomUUID(), TagName.КАВЕР));
-        tagRepository.save(new Tag(UUID.randomUUID(), TagName.ФАНФИК));
-        tagRepository.save(new Tag(UUID.randomUUID(), TagName.ХЕНДМЕЙД));
-        tagRepository.save(new Tag(UUID.randomUUID(), TagName.ВИДЕО));
-        tagRepository.save(new Tag(UUID.randomUUID(), TagName.NSFW));
-        tagRepository.save(new Tag(UUID.randomUUID(), TagName.ДРУГОЕ));
-
-        Role userRole = new Role(UUID.randomUUID(), RoleType.ROLE_USER);
-        Role adminRole = new Role(UUID.randomUUID(), RoleType.ROLE_ADMIN);
-        userRole = roleRepository.save(userRole);
-        adminRole = roleRepository.save(adminRole);
-
-
-        User testUser = User.builder()
-                .id(UUID.randomUUID())
-                .username("TestUser")
-                .password(passwordEncoder.encode("randomthing"))
-                .registrationDate(LocalDate.now())
-                .roles(Set.of(userRole, adminRole))
-                .build();
-
-        testUser = userRepository.save(testUser);
-
-        Post testPost = Post.builder()
-                .id(UUID.randomUUID())
-                .author(testUser)
-                .title("Это пробный пост")
-                .body("Тут ничего интересного, просто проверка")
-                .creationTime(LocalDateTime.now())
-                .build();
-
-        postRepository.save(testPost);
+//        tagRepository.save(new Tag(UUID.randomUUID(), TagName.АРТ));
+//        tagRepository.save(new Tag(UUID.randomUUID(), TagName.ХЕДКАНОН));
+//        tagRepository.save(new Tag(UUID.randomUUID(), TagName.КОСПЛЕЙ));
+//        tagRepository.save(new Tag(UUID.randomUUID(), TagName.КАВЕР));
+//        tagRepository.save(new Tag(UUID.randomUUID(), TagName.ФАНФИК));
+//        tagRepository.save(new Tag(UUID.randomUUID(), TagName.ХЕНДМЕЙД));
+//        tagRepository.save(new Tag(UUID.randomUUID(), TagName.ВИДЕО));
+//        tagRepository.save(new Tag(UUID.randomUUID(), TagName.NSFW));
+//        tagRepository.save(new Tag(UUID.randomUUID(), TagName.ДРУГОЕ));
+//
+//        Role userRole = new Role(UUID.randomUUID(), RoleType.ROLE_USER);
+//        Role adminRole = new Role(UUID.randomUUID(), RoleType.ROLE_ADMIN);
+//        userRole = roleRepository.save(userRole);
+//        adminRole = roleRepository.save(adminRole);
+//
+//
+//        User testAdmin = User.builder()
+//                .id(UUID.randomUUID())
+//                .username("Admin")
+//                .password(passwordEncoder.encode("randomthing"))
+//                .registrationDate(LocalDate.now())
+//                .roles(Set.of(userRole, adminRole))
+//                .build();
+//
+//        testAdmin = userRepository.save(testAdmin);
+//
+//        User testUser = User.builder()
+//                .id(UUID.randomUUID())
+//                .username("TestUser")
+//                .password(passwordEncoder.encode("testpassword"))
+//                .registrationDate(LocalDate.now())
+//                .roles(Set.of(userRole))
+//                .build();
+//
+//        testUser = userRepository.save(testUser);
+//
+//        Post testPost = Post.builder()
+//                .id(UUID.randomUUID())
+//                .author(testUser)
+//                .title("Это пробный пост")
+//                .body("Тут ничего интересного, просто проверка")
+//                .creationTime(LocalDateTime.now())
+//                .build();
+//
+//        postRepository.save(testPost);
     }
 
 }

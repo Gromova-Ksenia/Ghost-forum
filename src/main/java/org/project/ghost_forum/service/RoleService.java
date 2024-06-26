@@ -32,4 +32,8 @@ public class RoleService {
                 .map(Optional::get)
                 .collect(Collectors.toSet());
     }
+
+    public Role findRoleByName(String name){
+        return repository.findByName(name);
+    }
 }
