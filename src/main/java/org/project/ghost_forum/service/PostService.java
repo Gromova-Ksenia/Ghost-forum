@@ -14,10 +14,6 @@ import org.project.ghost_forum.mapper.PostMapper;
 import org.project.ghost_forum.mapper.TagMapper;
 import org.project.ghost_forum.mapper.UserMapper;
 import org.project.ghost_forum.repository.PostRepository;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +26,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class PostService implements ApplicationContextAware, InitializingBean {
+public class PostService {
     private final PostRepository repository;
     private final PostMapper mapper;
     private final UserService userService;
@@ -38,12 +34,7 @@ public class PostService implements ApplicationContextAware, InitializingBean {
     private final TagService tagService;
     private final CommentMapper commentMapper;
     private final TagMapper tagMapper;
-    private ApplicationContext context;
-    private CommentService commentService;
 
-    public CommentService getCommentService() {
-        return commentService;
-    }
 
     public List<PostDto> getAll(){
         return repository.findAll().stream().map(mapper::toDto).toList();
@@ -56,16 +47,12 @@ public class PostService implements ApplicationContextAware, InitializingBean {
         List<UUID> tagIds = postDto.getTags().stream().map(TagDto::getId).collect(Collectors.toList());
         Set<Tag> postTags = tagService.getTags(tagIds);
 
-        List<UUID> commentIds = postDto.getComments().stream().map(CommentDto::getId).toList();
-        Set<Comment> comments = commentService.getComments(commentIds);
-
         Post post = mapper.toEntity(postDto).builder()
                 .author(author)
                 .title(postDto.getTitle())
                 .body(postDto.getBody())
                 .creationTime(LocalDateTime.now())
                 .rating(0)
-                .comments(comments)
                 .tags(postTags).build();
 
         Post savedPost = repository.save(post);
@@ -74,6 +61,10 @@ public class PostService implements ApplicationContextAware, InitializingBean {
 
     public Post getPostById(UUID id){
         return repository.findById(id).orElseThrow();
+    }
+
+    public PostDto findById(UUID id){
+        return mapper.toDto(repository.findById(id).orElseThrow());
     }
 
     @Transactional
@@ -94,7 +85,7 @@ public class PostService implements ApplicationContextAware, InitializingBean {
 
     @Transactional
     public PostDto editPost(PostDto postDto){
-        User author = userService.getUserById(postDto.getAuthorId());
+        User author = userMapper.toEntity(userService.getCurrent());
 
         Set<Comment> comments = postDto.getComments().stream().map(commentMapper::toEntity).collect(Collectors.toSet());
         Set<Tag> tags = postDto.getTags().stream().map(tagMapper::toEntity).collect(Collectors.toSet());
@@ -112,15 +103,5 @@ public class PostService implements ApplicationContextAware, InitializingBean {
         Post savedPost = repository.save(post);
 
         return mapper.toDto(savedPost);
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        commentService = context.getBean(CommentService.class);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        context = applicationContext;
     }
 }

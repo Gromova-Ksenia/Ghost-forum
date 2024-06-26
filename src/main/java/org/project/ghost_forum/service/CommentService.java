@@ -8,7 +8,6 @@ import org.project.ghost_forum.entity.User;
 import org.project.ghost_forum.mapper.CommentMapper;
 import org.project.ghost_forum.mapper.UserMapper;
 import org.project.ghost_forum.repository.CommentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +25,7 @@ public class CommentService {
     private final CommentRepository repository;
     private final CommentMapper mapper;
     private final UserService userService;
-    private PostService postService;
-    private final UserMapper userMapper;
+
 
     public Set<Comment> getComments(List<UUID> commentIds){
         return commentIds.stream()
@@ -38,15 +36,11 @@ public class CommentService {
 
     @Transactional
     public CommentDto newComment(CommentDto commentDto){
-        User user = userMapper.toEntity(userService.getCurrent());
-        Post post = postService.getPostById(commentDto.getPostId());
 
-        Comment comment = mapper.toEntity(commentDto).builder()
-                .post(post)
-                .user(user)
-                .creationTime(LocalDateTime.now())
-                .body(commentDto.getBody())
-                .build();
+        commentDto.setCreationTime(LocalDateTime.now());
+        commentDto.setUserId(userService.getCurrent().getId());
+
+        Comment comment = mapper.toEntity(commentDto);
 
         Comment savedComment = repository.save(comment);
         return mapper.toDto(savedComment);
@@ -86,10 +80,5 @@ public class CommentService {
     public List<CommentDto> getCommentsToPost(UUID postId){
         return repository.findAllByPost(postId).stream()
                 .map(this::transformToDto).toList();
-    }
-
-    @Autowired
-    public void setPostService(PostService postService){
-        this.postService = postService;
     }
 }

@@ -15,8 +15,13 @@ public class CommentController {
     private final CommentService service;
 
     @PostMapping("/new-comment")
-    public void createComment(@RequestBody CommentDto commentDto){
-        service.newComment(commentDto);
+    public CommentDto createComment(@RequestBody CommentDto commentDto){
+        return service.newComment(commentDto);
+    }
+
+    @DeleteMapping("/delete-comment")
+    public void deleteComment(@RequestParam UUID id){
+        service.deleteComment(id);
     }
 
     @GetMapping("/post{id}")

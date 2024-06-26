@@ -32,12 +32,12 @@ public class UserController {
         return  service.getCurrent();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id{id}")
     public UserDto getUserById(@PathVariable UUID id){
         return mapper.toDto(service.getUserById(id));
     }
 
-    @GetMapping("/{id}/posts")
+    @GetMapping("/id{id}/posts")
     public List<PostDto> getPostsByUser(@PathVariable UUID id){
         return postService.getPostsByUser(id);
     }

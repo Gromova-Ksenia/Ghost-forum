@@ -15,6 +15,7 @@ import org.project.ghost_forum.repository.PostRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -28,9 +29,19 @@ public class LikedPostService {
     private final PostMapper postMapper;
     private final UserMapper userMapper;
 
-    public char getPostRateForCurrentUser(UUID postId){
+    public char getPostRate(UUID postId){
         UserDto user = userService.getCurrent();
         UUID userId = user.getId();
+
+        return repository.findByUserIdAndPostId(userId, postId)
+                .map(LikedPost::getRate).orElse('0');
+
+    }
+
+    public char getPostRate(LikedPostDto likedPostDto){
+        User user = userService.getUserById(likedPostDto.getUserId());
+        UUID userId = user.getId();
+        UUID postId = likedPostDto.getPostId();
 
         return repository.findByUserIdAndPostId(userId, postId)
                 .map(LikedPost::getRate).orElse('0');
@@ -43,39 +54,49 @@ public class LikedPostService {
         //Получаем пользователя, от которого запрос
         User user = userMapper.toEntity(userService.getCurrent());
         UUID postId = likedPostDto.getPostId();
+        char rate = likedPostDto.getRate().charAt(0);
 
         //Если раньше оценки не было
         if (repository.findByUserIdAndPostId(user.getId(), postId).isEmpty()){
-            //Получаем пост
-            Post post = postService.getPostById(postId);
+                //Получаем пост
+                Post post = postService.getPostById(postId);
 
-            //Говорим что теперь оценка есть
-            likedPostDto.setUserId(user.getId());
-            LikedPost thisPost = mapper.toEntity(likedPostDto);
-            LikedPost savedLikedPost = repository.save(thisPost);
-            return mapper.toDto(savedLikedPost);
-        } else {
-            //Если оценка была, тащим пост
-            Post post = postService.getPostById(postId);
-            PostDto postDto = postMapper.toDto(post);
+                //Говорим что теперь оценка есть
+                likedPostDto.setUserId(user.getId());
+                LikedPost thisPost = mapper.toEntity(likedPostDto);
+                LikedPost savedLikedPost = repository.save(thisPost);
 
-            return repository.findByUserIdAndPostId(user.getId(), postId).map(likedPost -> {
-                //Обнуляем старую оценку
-                if(likedPost.getRate()=='+')
-                postDto.decreaseRating();
-                else postDto.increaseRating();
-                //Бахаем новую
-                if (likedPostDto.getRate()=='+')
+                PostDto postDto = postMapper.toDto(post);
+                if (rate=='+')
                     postDto.increaseRating();
                 else postDto.decreaseRating();
-                //Сохраняем
+
                 postRepository.save(postMapper.toEntity(postDto));
 
-                LikedPost newLikedPost = mapper.toEntity(likedPostDto);
-                LikedPost savedLikedPost = repository.save(newLikedPost);
                 return mapper.toDto(savedLikedPost);
-            }).orElse(likedPostDto);//Мы сюда никогда не зайдём по определению, но опшиналы тупые, поэтому да
-        }
+            } else {
+                //Если оценка была, тащим пост
+                Post post = postService.getPostById(postId);
+                PostDto postDto = postMapper.toDto(post);
+
+                return repository.findByUserIdAndPostId(user.getId(), postId).map(likedPost -> {
+                    //Обнуляем старую оценку
+                    if(likedPost.getRate()=='+')
+                        postDto.decreaseRating();
+                    else postDto.increaseRating();
+                    //Бахаем новую
+                    if (rate=='+')
+                        postDto.increaseRating();
+                    else postDto.decreaseRating();
+                    //Сохраняем
+                    postRepository.save(postMapper.toEntity(postDto));
+
+                    LikedPost newLikedPost = mapper.toEntity(likedPostDto);
+                    LikedPost savedLikedPost = repository.save(newLikedPost);
+                    return mapper.toDto(savedLikedPost);
+                }).orElse(likedPostDto);//Мы сюда никогда не зайдём по определению, но опшиналы тупые, поэтому да
+            }
+
     }
 
     @Transactional
@@ -94,7 +115,8 @@ public class LikedPostService {
 
             repository.delete(likedPost);
             return null;
-        }).orElseThrow();
+        }).isPresent();
+
     }
 
 }

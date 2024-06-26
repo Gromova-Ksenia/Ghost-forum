@@ -16,5 +16,5 @@ import java.util.UUID;
 public class LikedPostDto {
     private UUID postId;
     private UUID userId;
-    private char rate;
+    private String rate;
 }

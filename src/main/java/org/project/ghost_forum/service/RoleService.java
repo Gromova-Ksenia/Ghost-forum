@@ -33,7 +33,7 @@ public class RoleService {
                 .collect(Collectors.toSet());
     }
 
-    public Role findRoleByName(String name){
+    public Role findRoleByName(RoleType name){
         return repository.findByName(name);
     }
 }

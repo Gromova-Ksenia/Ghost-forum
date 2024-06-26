@@ -8,6 +8,7 @@ import org.project.ghost_forum.dto.RoleDto;
 import org.project.ghost_forum.dto.UserDto;
 import org.project.ghost_forum.entity.Role;
 import org.project.ghost_forum.entity.User;
+import org.project.ghost_forum.enums.RoleType;
 import org.project.ghost_forum.mapper.UserMapper;
 import org.project.ghost_forum.repository.UserRepository;
 import org.springframework.security.core.Authentication;
@@ -35,7 +36,7 @@ public class UserService {
     private EntityManager entityManager;
 
     @Transactional
-    @Encrypt //Добавляем нового юзера
+    @Encrypt //Вход за юзера?
     public UserDto addUser(UserDto userDto) {
         List<UUID> roleIds = userDto.getRoles().stream().map(RoleDto::getId).collect(Collectors.toList());
 
@@ -58,10 +59,10 @@ public class UserService {
     }
 
     @Transactional
-    @Encrypt
+    @Encrypt  //Регистрация
     public UserDto userRegistration(UserDto userDto){
 
-        Role userRole = roleService.findRoleByName("ROLE_USER");
+        Role userRole = roleService.findRoleByName(RoleType.ROLE_USER);
 
         User newUser = User.builder()
                 .username(userDto.getUsername())
@@ -72,7 +73,13 @@ public class UserService {
 
         User savedUser = repository.save(newUser);
 
-        return mapper.toDto(savedUser);
+        UserDto dto = mapper.toDto(savedUser);
+        dto.setRoles(Set.of(RoleDto.builder()
+                .id(userRole.getId())
+                .role(userRole.getRoleType().name())
+                .build()));
+
+        return dto;
     }
 
     //Я ничё не понял

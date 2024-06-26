@@ -18,14 +18,13 @@ public class RegistrationController {
     private final UserValidator validator;
 
     @PostMapping
-    public String registerUser(@RequestBody UserDto userDto, BindingResult bindingResult){
+    public UserDto registerUser(@RequestBody UserDto userDto, BindingResult bindingResult){
         validator.validate(userDto, bindingResult);
 
         if (bindingResult.hasErrors()){
-            throw new ValidationException();
+            throw new ValidationException("Пользователь с таким username уже существует!");
         }
 
-        service.userRegistration(userDto);
-        return "redirect:/home";
+        return service.userRegistration(userDto);
     }
 }
