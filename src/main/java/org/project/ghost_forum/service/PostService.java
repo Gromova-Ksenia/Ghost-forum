@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -69,7 +70,11 @@ public class PostService {
 
     @Transactional
     public void deletePost(UUID id){
-        repository.deleteById(id);
+        repository.findById(id)
+                .map(post -> {
+            repository.delete(post);
+            return null;
+        }).orElse(null);
     }
 
     public List<PostDto> getPostsByUser(UUID userId){

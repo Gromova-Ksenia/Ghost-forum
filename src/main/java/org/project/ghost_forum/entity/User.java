@@ -1,6 +1,7 @@
 package org.project.ghost_forum.entity;
 import jakarta.persistence.*;
 //import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class User {
     private UUID id;
 
     @Column(name = "username")
+    @Size(min = 3, max = 40)
     @NotNull
     private String username;
 

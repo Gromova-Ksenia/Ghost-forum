@@ -61,7 +61,10 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(UUID id){
-        repository.deleteById(id);
+        repository.findById(id).map(comment -> {
+            repository.delete(comment);
+            return null;
+        }).orElse(null);
     }
 
     //Иначе ошибка неизвестного рода

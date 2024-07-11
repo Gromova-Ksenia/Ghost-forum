@@ -6,6 +6,7 @@ import org.project.ghost_forum.dto.PostDto;
 import org.project.ghost_forum.mapper.PostMapper;
 import org.project.ghost_forum.service.LikedPostService;
 import org.project.ghost_forum.service.PostService;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +20,9 @@ public class PostController {
     private final LikedPostService likedPostService;
 
     @GetMapping
-    public List<PostDto> getAllPosts(){
-        return service.getAll();
+    public String getAllPosts(Model model){
+        model.addAttribute("posts", service.getAll());
+        return "posts";
     }
 
     @GetMapping("/{id}")

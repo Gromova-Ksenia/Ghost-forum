@@ -1,63 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Творческая</title>
-    <link rel="stylesheet" href="MainStyle.css">
+    <link rel="stylesheet" href="css/MainStyle.css">
 </head>
 <body>
-    <div class="head">
-        <h1 style="background: transparent; font-size: 1em; color: white;">GHOST FAN FORUM</h1>
-        <div class="login-bottoms">
-            <a href="registration" id="registration">РЕГИСТРАЦИЯ</a>
-            <a href="login" id="login">ВХОД</a>
-        </div>
-    </div>
+    <div th:replace="~{fragments/head :: #head}"></div>
 
     <div class="page-space">
-        <div id="left-menu">
-            <a href="user">Мой профиль</a>
-            <a href="home">Главная</a>
-            <a href="login">Логин</a>
-            <a href="posts">Творческая</a>
-            <a href="admin">Админская</a>
-        </div>
-        <tbody class = "main-space" id="postListBody">
-            
-        </tbody>
-        <div class="modal fade" id="editEmployeeModal" tabindex="-10" role="dialog" aria-labelledby="editPostModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="editPostModalLabel">Редактировать пост</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form id="editPostForm">
-                  </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                  <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div th:replace="~{fragments/left-menu :: #left-menu}"></div>
+       <div class="row" th:each="post : ${posts}" th:action="/api/posts" th:method="GET">
+           <div class="row">
+               <a th:href="@{/posts/} + ${post.id}" th:text="${post.title}"></a>
+               <a th:href="@{/user/} + ${post.authorId}" th:text="${post.authorUsername}"></a>
+               <span class="right" th:text="${post.creationTime} ? ${#calendars.format(post.creationTime, 'dd MM yyyy HH:mm')}"></span>
+               <span class="truncate" th:text="${post.body}"></span>
+           </div>
+       </div>
+
     </div>
 
-    <div class="bottom">
-        <a href="http://">Правила</a>
-        <a href="http://">Я пока хз</a>
-        <a href="http://">FAQ</a>
-        <a href="http://">На кофь</a>
-    </div>
+    <div th:replace="~{fragments/bottom :: #bottom}"></div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="../static/script.js"></script>
 </body>
 </html>

@@ -23,7 +23,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 
@@ -35,7 +35,7 @@ public class Comment {
     @NotNull
     private LocalDateTime creationTime;
 
-    @Column(name = "body", length = 5000)
+    @Column(name = "body", length = 2000)
     @NotNull
     private String body;
 }

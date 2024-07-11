@@ -68,15 +68,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/registration", "/login").not().authenticated()
+                        .requestMatchers("/registration", "/api/registration", "/api/login", "/login").not().authenticated()
                         .requestMatchers("/", "/home").permitAll()
                         .requestMatchers("/new_post").hasRole("USER")
                         .requestMatchers("/admin", "/api/admin**").hasRole("ADMIN")
-                        .requestMatchers("/static/**").permitAll()
+                        .requestMatchers("/css/**", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin
-                        .loginPage("/login").successHandler(successHandler()).permitAll())
+                        .loginPage("/login").successHandler(successHandler()))
                 .userDetailsService(userDetailsService)
                 .exceptionHandling(exception -> exception.accessDeniedHandler(deniedHandler()))
                 .logout(LogoutConfigurer::permitAll);

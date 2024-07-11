@@ -14,4 +14,7 @@ public interface CommentRepository extends JpaRepository<Comment, UUID> {
 
     @Query("FROM Comment c WHERE c.post.id = :postId")
     List<Comment> findAllByPost(UUID postId);
+
+    @Query("DELETE FROM Comment c WHERE c.id = :id")
+    void delete(UUID id);
 }

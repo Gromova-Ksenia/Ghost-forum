@@ -1,0 +1,10 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<div th:fragment="left-menu" id="left-menu">
+    <a href="user">Мой профиль</a>
+    <a href="home">Главная</a>
+    <a href="posts">Творческая</a>
+    <a href="admin" sec:authorize="hasRole('ROLE_ADMIN')">Админская</a>
+</div>

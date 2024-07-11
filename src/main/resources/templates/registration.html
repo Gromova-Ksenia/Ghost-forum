@@ -1,52 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:form="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистрация</title>
-    <link rel="stylesheet" href="MainStyle.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css"
+          integrity="2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/MainStyle.css">
+    <link rel="stylesheet" href="css/LoginStyle.css">
 </head>
 
 <body>
-    <div class="head">
-        <h1 style="background: transparent; font-size: 1em; color: white;">GHOST FAN FORUM</h1>
-        <div class="login-bottoms">
-            <a href="registration" id="registration">РЕГИСТРАЦИЯ</a>
-            <a href="login" id="login">ВХОД</a>
-        </div>
-    </div>
+    <div th:replace="~{fragments/head :: #head}"></div>
 
-    <div class="page-space">
-        <div id="left-menu">
-            <a href="user">Мой профиль</a>
-            <a href="home">Главная</a>
-            <a href="login">Логин</a>
-            <a href="posts">Творческая</a>
-            <a href="admin">Админская</a>
-        </div>
+    <div class="page-space container-fluid">
+        <div th:replace="~{fragments/left-menu :: #left-menu}"></div>
         <div class="main-space">
-            <form class="form-signin" method="post" action="/login">
-                <h2 class="form-signin-heading">Please sign in</h2>
-                <p>
-                    <label for="username" class="sr-only">Username</label>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
-                </p>
-                <p>
-                    <label for="password" class="sr-only">Password</label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-                </p>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Registr</button>
-            </form>
+            <form:form class="reg-form" th:action="@{/api/registration}" th:object="${user}" modelAttribute="user" method="POST">
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input th:field="*{username}" id="username" name="username" type="text" class="validate"/>
+                        <label for="username">Имя пользователя:</label>
+                        <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="red-text">Неверное имя пользователя!</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input th:field="*{email}" id="email" name="email" type="email" class="validate"/>
+                        <label for="email">Email</label>
+                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="red-text">Неверный email!</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input th:field="*{password}" id="password" name="password" type="password" class="validate"/>
+                        <label for="password">Пароль</label>
+                        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="red-text">Неверный email!</p>
+                    </div>
+                </div>
+
+                <input class="btn waves-effect waves-light" type="submit" name="action" value="Регистрация" />
+            </form:form>
         </div>
     </div>
 
-    <div class="bottom">
-        <a href="http://">Правила</a>
-        <a href="http://">Я пока хз</a>
-        <a href="http://">FAQ</a>
-        <a href="http://">На кофь</a>
-    </div>
+    <div th:replace="~{fragments/bottom :: #bottom}"></div>
 </body>
 
 </html>

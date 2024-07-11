@@ -19,8 +19,8 @@ public class CommentController {
         return service.newComment(commentDto);
     }
 
-    @DeleteMapping("/delete-comment")
-    public void deleteComment(@RequestParam UUID id){
+    @DeleteMapping("/delete-comment/{id}")
+    public void deleteComment(@PathVariable UUID id){
         service.deleteComment(id);
     }
 

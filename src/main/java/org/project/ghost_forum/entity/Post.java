@@ -43,7 +43,7 @@ public class Post {
     @Builder.Default
     private int rating = 0;
 
-    @OneToMany(mappedBy = "post", orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private Set<Comment> comments;
 
     @JoinTable(name = "post_tags",

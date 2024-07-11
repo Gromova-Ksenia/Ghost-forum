@@ -5,37 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{login}</title>
-    <link rel="stylesheet" href="MainStyle.css">
+    <link rel="stylesheet" href="css/MainStyle.css">
 </head>
 
 <body>
-    <div class="head">
-        <h1 style="background: transparent; font-size: 1em; color: white;">GHOST FAN FORUM</h1>
-        <div class="login-bottoms">
-            <a href="registration" id="registration">РЕГИСТРАЦИЯ</a>
-            <a href="login" id="login">ВХОД</a>
-        </div>
-    </div>
+    <div th:replace="~{fragments/head :: #head}"></div>
 
     <div class="page-space">
-        <div id="left-menu">
-            <a href="user">Мой профиль</a>
-            <a href="home">Главная</a>
-            <a href="login">Логин</a>
-            <a href="posts">Творческая</a>
-            <a href="admin">Админская</a>
-        </div>
+        <div th:replace="~{fragments/left-menu :: #left-menu}"></div>
         <div class="main-space">
             
         </div>
     </div>
 
-    <div class="bottom">
-        <a href="http://">Правила</a>
-        <a href="http://">Я пока хз</a>
-        <a href="http://">FAQ</a>
-        <a href="http://">На кофь</a>
-    </div>
+    <div th:replace="~{fragments/bottom :: #bottom}"></div>
 </body>
 
 </html>
