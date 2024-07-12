@@ -35,7 +35,7 @@ public class PostService {
 
 
     public List<PostDto> getAll(){
-        return repository.findAll().stream().map(mapper::toDto).toList();
+        return repository.findAll().stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
     @Transactional

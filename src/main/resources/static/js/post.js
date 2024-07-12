@@ -16,7 +16,7 @@ function onCreate(){
 }
 
 function sendPostForm(){
-    let url = "/api/posts/new-post";
+    let url = "/posts/new-post";
     let data = JSON.stringify(newPostForm);
 
     $.ajax({

@@ -8,26 +8,30 @@ import org.project.ghost_forum.service.LikedPostService;
 import org.project.ghost_forum.service.PostService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.net.http.HttpClient;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/posts")
+@RequestMapping("/posts")
 public class PostController {
     private final PostService service;
     private final LikedPostService likedPostService;
 
     @GetMapping
-    public String getAllPosts(Model model){
-        model.addAttribute("posts", service.getAll());
-        return "posts";
+    @ModelAttribute("allPosts")
+    public void getAllPosts(Model model){
+        model.addAttribute("allPosts", service.getAll());
     }
 
     @GetMapping("/{id}")
-    public PostDto getPost(@PathVariable UUID id){
-        return service.findById(id);
+    public ModelAndView getPost(@ModelAttribute("post") PostDto postDto, @PathVariable("id") UUID uuid, Model model){
+        model.addAttribute("post", service.findById(uuid));
+        return new ModelAndView("post", "post", service.findById(uuid));
+        //return "post";
     }
 
     @PostMapping("/new-post")
@@ -55,10 +59,6 @@ public class PostController {
         return likedPostService.getPostRate(postId);
     }
 
-//    @GetMapping("/{postId}/get-rate")
-//    public char getRate(@RequestBody LikedPostDto likedPostDto){
-//        return likedPostService.getPostRate(likedPostDto);
-//    }
 
     @DeleteMapping("/delete-post")
     public void deletePost(@RequestParam UUID id){

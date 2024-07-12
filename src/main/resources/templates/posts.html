@@ -13,14 +13,15 @@
     <div class="page-space">
         <div th:replace="~{fragments/left-menu :: #left-menu}"></div>
 
-        <div class="row" th:each="post : ${posts}" th:action="/api/posts" th:method="GET">
-           <div class="row">
-               <a th:href="@{/posts/} + ${post.id}" th:text="${post.title}"></a>
-               <a th:href="@{/user/} + ${post.authorId}" th:text="${post.authorUsername}"></a>
-               <span class="right" th:text="${post.creationTime} ? ${#calendars.format(post.creationTime, 'dd MM yyyy HH:mm')}"></span>
-               <span class="truncate" th:text="${post.body}"></span>
-           </div>
-       </div>
+        <div>
+            <ul>
+                <li class="row" th:each="post : ${allPosts}">
+                    <a th:href="@{/user/{id}(id=${post.authorUsername})}" th:text="${post.authorUsername}">User</a>
+                    <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}">Title</a>
+                </li>
+            </ul>
+        </div>
+
 
     </div>
 

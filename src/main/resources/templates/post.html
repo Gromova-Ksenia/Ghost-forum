@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ошибка!</title>
+    <link rel="stylesheet" href="css/MainStyle.css">
+    <link rel="stylesheet" href="css/MainPage.css">
+    <link rel="stylesheet" href="../css/MainStyle.css">
+    <link rel="stylesheet" href="../css/MainPage.css">
+</head>
+
+<body>
+<div th:replace="~{fragments/head :: #head}"></div>
+
+<div class="page-space">
+    <div th:replace="~{fragments/left-menu :: #left-menu}"></div>
+    <div class="main-space">
+        <p th:text="${post.authorUsername}">Автор <span>Время публикации</span></p>
+        <p th:text="${post.title}">Заголовок</p>
+        <p th:text="${post.body}">Текст</p>
+    </div>
+</div>
+
+<div th:replace="~{fragments/bottom :: #bottom}"></div>
+</body>
+
+</html>
