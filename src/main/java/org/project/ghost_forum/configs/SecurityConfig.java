@@ -69,10 +69,10 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/registration", "/api/registration", "/api/login", "/login").not().authenticated()
-                        .requestMatchers("/", "/home").permitAll()
-                        .requestMatchers("/new_post").hasRole("USER")
+                        .requestMatchers("/", "/home", "/posts", "/error").permitAll()
+                        .requestMatchers("/new_post", "/my-profile").hasRole("USER")
                         .requestMatchers("/admin", "/api/admin**").hasRole("ADMIN")
-                        .requestMatchers("/css/**", "/images/**").permitAll()
+                        .requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin

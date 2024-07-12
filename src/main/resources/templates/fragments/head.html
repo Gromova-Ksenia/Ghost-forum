@@ -1,11 +1,13 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <div th:fragment="head" class="head" id="head">
         <h1 style="background: transparent; font-size: 1em; color: white;">GHOST FAN FORUM</h1>
         <div class="login-bottoms">
-            <a href="registration" id="registration">РЕГИСТРАЦИЯ</a>
-            <a href="login" id="login">ВХОД</a>
+            <a href="registration" sec:authorize="isAnonymous()" id="registration">Регистрация</a>
+            <a href="login" sec:authorize="isAnonymous()" id="login">Вход</a>
+            <a href="my-profile" sec:authorize="isAuthenticated()" sec:authentication="name"></a>
+            <a href="logout" sec:authorize="isAuthenticated()">Выйти</a>
         </div>
 </div>

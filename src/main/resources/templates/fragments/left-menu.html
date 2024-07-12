@@ -3,8 +3,10 @@
       xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <div th:fragment="left-menu" id="left-menu">
-    <a href="user">Мой профиль</a>
+    <a href="my-profile" sec:authorize="isAuthenticated()">Мой профиль</a>
     <a href="home">Главная</a>
     <a href="posts">Творческая</a>
+    <a href="new-post">Новый пост</a>
     <a href="admin" sec:authorize="hasRole('ROLE_ADMIN')">Админская</a>
+
 </div>

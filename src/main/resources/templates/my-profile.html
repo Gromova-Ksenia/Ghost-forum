@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title sec:authentication="name"></title>
+    <link rel="stylesheet" href="css/MainStyle.css">
+    <link rel="stylesheet" href="css/MainPage.css">
+</head>
+
+<body>
+<div th:replace="~{fragments/head :: #head}"></div>
+
+<div class="page-space">
+    <div th:replace="~{fragments/left-menu :: #left-menu}"></div>
+    <div class="main-space">
+        <div>
+            <span sec:authentication="name"></span>
+            <span>, это вы!</span>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/bottom :: #bottom}"></div>
+</body>
+
+</html>

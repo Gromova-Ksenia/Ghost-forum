@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -9,7 +10,7 @@
 </head>
 
 <body>
-<div th:replace="~{fragments/head :: #head}"></div>
+<div th:replace="~{fragments/head :: head}"></div>
 
     <div class="page-space">
         <div th:replace="~{fragments/left-menu :: #left-menu}"></div>

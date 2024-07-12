@@ -1,0 +1,48 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:form="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новый пост</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css"
+          integrity="2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/MainStyle.css">
+    <link rel="stylesheet" href="css/LoginStyle.css">
+</head>
+
+<body>
+<div th:replace="~{fragments/head :: #head}"></div>
+
+<div class="page-space container-fluid">
+    <div th:replace="~{fragments/left-menu :: #left-menu}"></div>
+    <div class="main-space">
+        <form:form class="reg-form" action="/api/registration" modelAttribute="post" method="POST">
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <label for="title">Заголовок:</label>
+                    <input field="*{title}" id="title" name="title" path="title" type="text" class="validate"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field">
+                    <input field="*{body}" id="post-body" name="body" path="body" type="text" class="validate"/>
+                </div>
+            </div>
+            <div>
+                <input class="btn" type="submit" action="/api/posts/new-post" method="POST" value="Отправить" id="post-button"/>
+            </div>
+
+        </form:form>
+    </div>
+</div>
+
+<div th:replace="~{fragments/bottom :: #bottom}"></div>
+</body>
+
+<script type="text/javascript" th:src="@{js/post.js}"></script>
+</html>

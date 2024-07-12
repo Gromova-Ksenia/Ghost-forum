@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 import org.project.ghost_forum.entity.Post;
 import org.project.ghost_forum.entity.User;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LikedPostDto {
+public class LikedPostDto implements Serializable {
     private UUID postId;
     private UUID userId;
     private String rate;

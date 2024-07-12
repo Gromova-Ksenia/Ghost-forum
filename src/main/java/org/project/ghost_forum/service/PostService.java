@@ -19,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,9 +41,13 @@ public class PostService {
     @Transactional
     public PostDto createPost(PostDto postDto){
         User author = userMapper.toEntity(userService.getCurrent());
+        Set<Tag> postTags = new HashSet<>();
 
-        List<UUID> tagIds = postDto.getTags().stream().map(TagDto::getId).collect(Collectors.toList());
-        Set<Tag> postTags = tagService.getTags(tagIds);
+        if (postDto.getTags() != null){
+            List<UUID> tagIds = postDto.getTags().stream().map(TagDto::getId).collect(Collectors.toList());
+            postTags = tagService.getTags(tagIds);
+        };
+
 
         Post post = mapper.toEntity(postDto).builder()
                 .author(author)

@@ -12,7 +12,8 @@
 
     <div class="page-space">
         <div th:replace="~{fragments/left-menu :: #left-menu}"></div>
-       <div class="row" th:each="post : ${posts}" th:action="/api/posts" th:method="GET">
+
+        <div class="row" th:each="post : ${posts}" th:action="/api/posts" th:method="GET">
            <div class="row">
                <a th:href="@{/posts/} + ${post.id}" th:text="${post.title}"></a>
                <a th:href="@{/user/} + ${post.authorId}" th:text="${post.authorUsername}"></a>
