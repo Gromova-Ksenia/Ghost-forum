@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.project.ghost_forum.entity.Role;
 
 import java.io.Serializable;
 import java.time.LocalDate;

@@ -18,13 +18,13 @@ public class RoleValidator implements Validator {
     }
 
     @Override
-    public void validate(Object target, Errors errors){
+    public void validate(Object target, Errors errors) {
         RoleDto targetRole = (RoleDto) target;
 
         boolean exists = roleService.findAll().stream()
                 .anyMatch(role -> targetRole.getRole().equals(role.getRoleType().name()));
 
-        if (exists){
+        if (exists) {
             errors.rejectValue("role", "");
         }
     }

@@ -19,7 +19,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import java.security.Security;
 import java.util.Set;
 
 @Configuration
@@ -30,7 +29,7 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
 
     @Bean //Успешный запрос аутентификации
-    public AuthenticationSuccessHandler successHandler(){
+    public AuthenticationSuccessHandler successHandler() {
         return (request, response, authentication) -> {
             Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
@@ -43,15 +42,15 @@ public class SecurityConfig {
         };
     }
 
-    @Bean //Отклоняемый запрос
+    @Bean //Доступ запрещён
     public AccessDeniedHandler deniedHandler() {
         return (request, response, accessDeniedException) -> {
             response.sendRedirect("/access-denied");
         };
     }
 
-    @Bean //Собираем управлялку входом
-    public AuthenticationManager authenticationManager(){
+    @Bean //Управление входом
+    public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
@@ -59,13 +58,13 @@ public class SecurityConfig {
         return new ProviderManager(authenticationProvider);
     }
 
-    @Bean
+    @Bean //Метод шифрования паролей
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+    @Bean //Распределение доступа
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/registration", "/api/registration", "/api/login", "/login").not().authenticated()

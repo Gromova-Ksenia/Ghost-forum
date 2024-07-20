@@ -15,7 +15,7 @@ public enum TagName {
     NSFW,
     ДРУГОЕ;
 
-    public static TagName fromString(String tag){
+    public static TagName fromString(String tag) {
         return Arrays.stream(TagName.values())
                 .filter(type -> Objects.equals(tag, type.name()))
                 .findAny().orElse(null);

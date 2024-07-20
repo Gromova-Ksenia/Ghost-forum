@@ -18,22 +18,22 @@ import java.util.stream.Collectors;
 public class RoleService {
     private final RoleRepository repository;
 
-    public void addRole(RoleDto role){
+    public void addRole(RoleDto role) {
         repository.save(Role.builder().roleType(RoleType.fromString(role.getRole())).build());
     }
 
-    public List<Role> findAll(){
+    public List<Role> findAll() {
         return repository.findAll();
     }
 
-    public Set<Role> getRoles(List<UUID> roleIds){
+    public Set<Role> getRoles(List<UUID> roleIds) {
         return roleIds.stream()
                 .map(repository::findById)
                 .map(Optional::get)
                 .collect(Collectors.toSet());
     }
 
-    public Role findRoleByName(RoleType name){
+    public Role findRoleByName(RoleType name) {
         return repository.findByName(name);
     }
 }

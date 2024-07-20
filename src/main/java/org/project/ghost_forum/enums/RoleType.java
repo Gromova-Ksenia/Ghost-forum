@@ -9,7 +9,7 @@ public enum RoleType {
 
     ROLE_ADMIN;
 
-    public static RoleType fromString(String role){
+    public static RoleType fromString(String role) {
         return Arrays.stream(RoleType.values())
                 .filter(type -> Objects.equals(role, type.name()))
                 .findAny().orElse(null);

@@ -12,11 +12,12 @@ import org.project.ghost_forum.entity.LikedPost;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface LikedPostMapper {
+    //спользование PKey вместо pKey вызвано неизвестной ошибкой
     @Mapping(target = "postId", source = "PKey.post.id")
     @Mapping(target = "userId", source = "PKey.user.id")
-    LikedPostDto toDto (LikedPost likedPost);
+    LikedPostDto toDto(LikedPost likedPost);
 
     @Mapping(source = "postId", target = "pKey.post.id")
     @Mapping(source = "userId", target = "pKey.user.id")
-    LikedPost toEntity (LikedPostDto likedPost);
+    LikedPost toEntity(LikedPostDto likedPost);
 }

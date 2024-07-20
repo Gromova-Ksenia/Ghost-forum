@@ -1,4 +1,5 @@
 package org.project.ghost_forum.entity;
+
 import org.project.ghost_forum.entity.primary_keys.LikedPostsPK;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

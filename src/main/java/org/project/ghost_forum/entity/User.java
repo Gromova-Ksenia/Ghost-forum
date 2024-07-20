@@ -1,6 +1,6 @@
 package org.project.ghost_forum.entity;
+
 import jakarta.persistence.*;
-//import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +35,6 @@ public class User {
     private String password;
 
     @Column(name = "email")
-//    @NotNull
     private String email;
 
     @Column(name = "description")

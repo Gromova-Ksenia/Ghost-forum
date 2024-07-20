@@ -2,13 +2,10 @@ package org.project.ghost_forum.validation;
 
 import lombok.RequiredArgsConstructor;
 import org.project.ghost_forum.dto.UserDto;
-import org.project.ghost_forum.entity.User;
 import org.project.ghost_forum.service.UserService;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor

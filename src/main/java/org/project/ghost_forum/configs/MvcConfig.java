@@ -6,11 +6,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
-    @Override //Привязка контроллеров страничкам
-    public void addViewControllers(ViewControllerRegistry registry){
+    @Override //Привязка контроллеров к страницам
+    public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/registration").setViewName("registration");
         registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/logout").setViewName("logout");
         registry.addViewController("/posts").setViewName("posts");
         registry.addViewController("/post").setViewName("post");
         registry.addViewController("/home").setViewName("home");

@@ -13,7 +13,7 @@ public class JpaUserDetailsService implements UserDetailsService {
     private final UserRepository repository;
 
     @Override //Ищем по юзернейму
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findByUsername(username).map(AuthUser::new).orElseThrow(() ->
                 new UsernameNotFoundException("Пользователь с username " + username + " не найден!"));
     }

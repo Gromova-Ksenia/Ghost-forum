@@ -4,9 +4,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.project.ghost_forum.dto.UserDto;
+import org.project.ghost_forum.exception.LoginExistException;
 import org.project.ghost_forum.service.UserService;
 import org.project.ghost_forum.validation.UserValidator;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -20,36 +20,15 @@ public class RegistrationController {
     private final UserService service;
     private final UserValidator validator;
 
-    @GetMapping
-    public ModelAndView register(){
-        return new ModelAndView("user","user",new UserDto());
-    }
-
-
-    @PostMapping
-    @ModelAttribute("user")
-    public String registerUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult, Model model){
+    @PostMapping //Регистрация
+    public String registerUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
         validator.validate(userDto, bindingResult);
 
-        if (bindingResult.hasErrors()){
-//            throw new ValidationException("Пользователь с таким username уже существует!");
-            throw new ValidationException("Что-то пошло не так!");
-            //return "error";
+        if (bindingResult.hasErrors()) {
+            throw new LoginExistException("Пользователь с таким username уже существует!");
         }
         service.userRegistration(userDto);
-        model.addAttribute("user", userDto);
         return "redirect:/login";
     }
-
-//    @PostMapping
-//    public ModelAndView registerUser(@RequestBody UserDto userDto, BindingResult bindingResult, Model model){
-//        validator.validate(userDto, bindingResult);
-//
-//        if (bindingResult.hasErrors()){
-//            throw new ValidationException("Что-то пошло не так!");
-//        }
-//        service.userRegistration(userDto);
-//        //model.addAttribute("newUser",userDto);
-//        return new ModelAndView().addObject("newUser", userDto);
-//    }
 }
+

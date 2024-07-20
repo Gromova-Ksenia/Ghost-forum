@@ -14,8 +14,9 @@ import org.project.ghost_forum.entity.Post;
 public interface PostMapper {
     @Mapping(target = "authorId", source = "author.id")
     @Mapping(target = "authorUsername", source = "author.username")
-    PostDto toDto (Post post);
+    PostDto toDto(Post post);
 
     @Mapping(source = "authorId", target = "author.id")
-    Post toEntity (PostDto post);
+    Post toEntity(PostDto post);
 }
+

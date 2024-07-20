@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -15,6 +14,5 @@ public interface CommentRepository extends JpaRepository<Comment, UUID> {
     @Query("FROM Comment c WHERE c.post.id = :postId")
     List<Comment> findAllByPost(UUID postId);
 
-    @Query("DELETE FROM Comment c WHERE c.id = :id")
-    void delete(UUID id);
 }
+

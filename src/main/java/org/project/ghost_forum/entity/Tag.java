@@ -1,4 +1,5 @@
 package org.project.ghost_forum.entity;
+
 import org.project.ghost_forum.enums.TagName;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

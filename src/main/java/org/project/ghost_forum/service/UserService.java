@@ -1,7 +1,5 @@
 package org.project.ghost_forum.service;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.project.ghost_forum.annotations.Encrypt;
 import org.project.ghost_forum.dto.RoleDto;
@@ -20,11 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,35 +28,10 @@ public class UserService {
     private final UserMapper mapper;
     private final UserRepository repository;
     private final RoleService roleService;
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    @Transactional
-    @Encrypt //Вход за юзера?
-    public UserDto addUser(UserDto userDto) {
-        List<UUID> roleIds = userDto.getRoles().stream().map(RoleDto::getId).collect(Collectors.toList());
-
-        Set<Role> roles = roleService.getRoles(roleIds);
-
-        User entity = mapper.toEntity(userDto);
-        entity.setRoles(roles);
-
-        User savedEntity = repository.save(entity);
-
-        UserDto dto = mapper.toDto(savedEntity);
-        dto.setRoles(roles.stream()
-                .map(role -> RoleDto.builder()
-                    .id(role.getId())
-                    .role(role.getRoleType().name())
-                    .build())
-                .collect(Collectors.toSet()));
-
-        return dto;
-    }
 
     @Transactional
     @Encrypt  //Регистрация
-    public UserDto userRegistration(UserDto userDto){
+    public UserDto userRegistration(UserDto userDto) {
 
         Role userRole = roleService.findRoleByName(RoleType.ROLE_USER);
 
@@ -82,7 +53,6 @@ public class UserService {
         return dto;
     }
 
-    //Я ничё не понял
     public UserDto getCurrent() {//Запрашиваем нынешнего пользователя
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
@@ -112,7 +82,7 @@ public class UserService {
     }
 
     @Transactional
-    public Boolean unbanUser(UUID id){
+    public Boolean unbanUser(UUID id) {
         return repository.findById(id)
                 .map(user -> {
                     user.setIsBanned(false);
@@ -122,17 +92,26 @@ public class UserService {
                 .orElse(Boolean.FALSE);
     }
 
-    public User getUserById(UUID id){
+    //Проверка на наличие роли администратора
+    public boolean hasAdminAuthority(UUID id) {
+        repository.findById(id).map(user -> {
+            if (user.getRoles().contains(roleService.findRoleByName(RoleType.ROLE_ADMIN))) return true;
+            else return false;
+        }).orElse(false);
+        return false;
+    }
+
+    public User getUserById(UUID id) {
         return repository.findById(id).orElseThrow();
     }
 
     //Ием по юзернейму без ошпинала
-    public User getUserByUsername(String username){
+    public User getUserByUsername(String username) {
         return repository.findByUsername(username).orElseThrow();
     }
 
-    //Разницы, кроме опшинала нет, но в одном месте мне нужен ошинал
-    public Optional<User> findByUsername(String username){
+    //Разницы, кроме Optional нет
+    public Optional<User> findByUsername(String username) {
         return repository.findByUsername(username);
     }
 }

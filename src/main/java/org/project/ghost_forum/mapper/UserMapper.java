@@ -12,7 +12,7 @@ import org.project.ghost_forum.entity.User;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
-    //@Mapping(target = "roles", ignore = true)
+    @Mapping(target = "roles", ignore = true)
     UserDto toDto(User user);
 
     User toEntity(UserDto user);

@@ -1,4 +1,5 @@
 package org.project.ghost_forum.entity;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -22,12 +23,11 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    //Внутри класса Post
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private User author;
 
-    @Column(name = "title")
+    @Column(name = "title", length = 100)
     @NotNull
     private String title;
 
@@ -43,7 +43,7 @@ public class Post {
     @Builder.Default
     private int rating = 0;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post")
     private Set<Comment> comments;
 
     @JoinTable(name = "post_tags",

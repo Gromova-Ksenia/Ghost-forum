@@ -3,7 +3,6 @@ package org.project.ghost_forum.dto;
 import lombok.*;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -24,11 +23,11 @@ public class PostDto implements Serializable {
     private Set<CommentDto> comments;
     private Set<TagDto> tags;
 
-    public void increaseRating(){
-        this.rating+=1;
+    public void increaseRating() {
+        this.rating += 1;
     }
 
-    public void decreaseRating(){
-        this.rating-=1;
+    public void decreaseRating() {
+        this.rating -= 1;
     }
 }

@@ -16,6 +16,7 @@ import java.io.Serializable;
 @Embeddable
 public class LikedPostsPK implements Serializable {
     @ManyToOne(cascade = CascadeType.REMOVE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "post_id")
     private Post post;
 

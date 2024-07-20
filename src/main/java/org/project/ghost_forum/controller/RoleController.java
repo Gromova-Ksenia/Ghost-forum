@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/roles")
+@RequestMapping("/api/roles")
 public class RoleController {
     private final RoleService roleService;
     private final RoleValidator validator;
 
-    @PostMapping
-    public void addRole(@RequestBody RoleDto roleDto, BindingResult bindingResult){
+    @PostMapping //Добавление роли
+    public void addRole(@RequestBody RoleDto roleDto, BindingResult bindingResult) {
         validator.validate(roleDto, bindingResult);
 
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             throw new ValidationException("Уже присутствует роль " + roleDto);
         }
 

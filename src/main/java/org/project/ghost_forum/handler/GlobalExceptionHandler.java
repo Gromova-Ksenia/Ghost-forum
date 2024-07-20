@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.LocalDateTime;
 
 @ControllerAdvice
-public class GlobalExeptionHandler {
-    //Помогите я не понимаю как это работает
+public class GlobalExceptionHandler {
+
     @ExceptionHandler(EntityNotFoundException.class) //Сущность не найдена - возвращаем статус
-    public ResponseEntity<ExceptionMessageObject> handleEntityNotFoundException(EntityNotFoundException exception){
+    public ResponseEntity<ExceptionMessageObject> handleEntityNotFoundException(EntityNotFoundException exception) {
         ExceptionMessageObject message = ExceptionMessageObject.builder()
                 .status(HttpStatus.NOT_FOUND)
                 .message(exception.getMessage())
@@ -22,7 +22,7 @@ public class GlobalExeptionHandler {
         return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(ValidationException.class) //Чёт пошло не по плану, но я не понимую что именно, но тоже выдаём ошибку
+    @ExceptionHandler(ValidationException.class) //Что-то пошло не по плану, тоже выдаём ошибку
     public ResponseEntity<ExceptionMessageObject> handleConstraintViolationException(ValidationException exception) {
         ExceptionMessageObject message = ExceptionMessageObject.builder()
                 .status(HttpStatus.BAD_REQUEST)
